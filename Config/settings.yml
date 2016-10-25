@@ -81,6 +81,11 @@ unclickable_contents:
         - 'Element/Select'
         - 'Element/Image'
 
+croppable_elements:
+    elements:
+        - 'Element/Image'
+    image_element: 'Element/Image'
+
 contents_events:
     rules:
     - { type: 'Element/Image', target: 'parent', events: 'context'}
