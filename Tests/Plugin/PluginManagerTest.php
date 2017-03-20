@@ -1,30 +1,31 @@
 <?php
 
 /*
- * Copyright (c) 2011-2015 Lp digital system
+ * Copyright (c) 2011-2017 Lp digital system
  *
- * This file is part of BackBee.
+ * This file is part of toolbar-bundle.
  *
- * BackBee is free software: you can redistribute it and/or modify
+ * toolbar-bundle is free bundle: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * BackBee is distributed in the hope that it will be useful,
+ * toolbar-bundle is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
+ * along with toolbar-bundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace BackBee\Bundle\ToolbarBundle\Tests\Plugin;
 
-use BackBee\Bundle\ToolbarBundle\Plugin\PluginManager;
-use BackBee\DependencyInjection\Container;
-
 use Symfony\Component\DependencyInjection\Definition;
+
+use BackBee\Bundle\ToolbarBundle\Plugin\PluginManager;
+use BackBee\Config\Config;
+use BackBee\DependencyInjection\Container;
 
 /**
  * Tests suite for PluginManager
@@ -51,6 +52,8 @@ class PluginManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->container = new Container();
+        $this->container->set('bundle.toolbar.config', new Config(__DIR__));
+
         $this->plugin_manager = new PluginManager($this->container);
     }
 
@@ -100,15 +103,13 @@ class PluginManagerTest extends \PHPUnit_Framework_TestCase
         $this->container->setDefinition('another_test_plugin', $definition->setArguments(['another_test_plugin']));
 
         $this->assertEquals([
-            'plugin' => [
+            'plugins' => [
                 'namespace' => [
                     'test_plugin'         => TestPlugin::TEST_NAMESPACE,
                     'another_test_plugin' => TestPlugin::TEST_NAMESPACE
                 ],
-                'config' => [
-                    'test_plugin'         => TestPlugin::$test_configuration,
-                    'another_test_plugin' => TestPlugin::$test_configuration
-                ]
+                'test_plugin'         => TestPlugin::$test_configuration,
+                'another_test_plugin' => TestPlugin::$test_configuration
             ]
         ], $this->plugin_manager->getPluginConfiguration());
     }
