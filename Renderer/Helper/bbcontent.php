@@ -138,6 +138,7 @@ class bbcontent extends AbstractHelper
         $this->computeRendermodeAttribute();
         $this->computeAcceptAttribute();
         $this->computeRteAttribute();
+        $this->computeOtherAttributes();
 
         return $this->getAttributesString();
     }
@@ -252,4 +253,18 @@ class bbcontent extends AbstractHelper
 
         return $result;
     }
+
+    /**
+     * @return array The new attributes
+     */
+    private function computeOtherAttributes()
+    {
+        foreach ($this->options as $key => $option) {
+            if (!in_array($key, ['class', 'dropzone', 'draggable'])) {
+                $this->attributes[$key] = (isset($this->attributes[$key]) ? array_merge($this->attributes[$key], $option) : $option);
+            }
+        }
+        return $this->attributes;
+    }
+
 }
